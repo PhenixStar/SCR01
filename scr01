@@ -13,7 +13,7 @@ case "$cmd" in
     cat <<'TXT'
 SCR01 toolkit - Samsung Galaxy 5G Mobile Wi-Fi (SM-H412J)
 
-  scr01 reset        Factory reset (erase userdata) via Thor/Odin, no SamFW
+  scr01 reset [--yes]  Factory reset via Thor/Odin, no SamFW (--yes = non-interactive)
   scr01 setup        Start-as-new: English language + keyboard + 5G-preferred (adb)
   scr01 5g [--guide] Report/attempt 5G-for-PH; --guide walks the on-device band lock
   scr01 apn [name]   Guided APN setup (smart|globe|dito): opens screen, prints values
