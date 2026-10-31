@@ -20,6 +20,24 @@ adb_present() { "$ADB" devices | awk 'NR>1 && $2=="device"{f=1} END{exit !f}'; }
 # True when a Samsung is enumerated in download/Odin mode (04e8:685d).
 download_present() { lsusb 2>/dev/null | grep -qiE '04e8:685d|Download mode'; }
 
+
+# --- run log -----------------------------------------------------------------
+SCR01_LOG="${SCR01_LOG:-$HOME/.local/share/scr01/runs.log}"
+log_run() { # log_run <action> <result> <detail...>
+  mkdir -p "$(dirname "$SCR01_LOG")" 2>/dev/null || true
+  printf '%s\t%s\t%s\t%s\n' "$(date -Is)" "$1" "$2" "${*:3}" >> "$SCR01_LOG" 2>/dev/null || true
+}
+
+# verify_setting <namespace> <key> <regex> -> echoes actual value, 0 on match
+verify_setting() {
+  local got; got="$("$ADB" shell settings get "$1" "$2" 2>/dev/null | tr -d '\r')"
+  printf '%s' "$got"
+  [[ "$got" =~ $3 ]]
+}
+
+# battery_level -> integer 0-100 (or empty)
+battery_level() { "$ADB" shell dumpsys battery 2>/dev/null | awk -F': ' '/  level:/{print $2; exit}' | tr -d '\r'; }
+
 require_adb() {
   adb_present || { err "SCR01 not in adb mode. Connect it and enable USB debugging."; exit 1; }
   local m; m="$("$ADB" shell getprop ro.product.model 2>/dev/null | tr -d '\r')"
