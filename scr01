@@ -6,14 +6,18 @@ case "$cmd" in
   reset) shift; exec bash "$HERE/scripts/scr01-reset.sh" "$@";;
   setup) shift; exec bash "$HERE/scripts/scr01-setup.sh" "$@";;
   5g)    shift; exec bash "$HERE/scripts/scr01-5g.sh" "$@";;
+  apn)   shift; exec bash "$HERE/scripts/scr01-apn.sh" "$@";;
   build-thor) shift; exec bash "$HERE/tools/build-thor.sh" "$@";;
+  log)   shift; tail -n "${1:-20}" "${SCR01_LOG:-$HOME/.local/share/scr01/runs.log}" 2>/dev/null || echo "no runs logged yet";;
   menu|*)
     cat <<'TXT'
 SCR01 toolkit - Samsung Galaxy 5G Mobile Wi-Fi (SM-H412J)
 
   scr01 reset        Factory reset (erase userdata) via Thor/Odin, no SamFW
   scr01 setup        Start-as-new: English language + keyboard + 5G-preferred (adb)
-  scr01 5g           Report/attempt 5G-for-PH; prints on-device band steps
+  scr01 5g [--guide] Report/attempt 5G-for-PH; --guide walks the on-device band lock
+  scr01 apn [name]   Guided APN setup (smart|globe|dito): opens screen, prints values
+  scr01 log [N]      Show the last N run-log lines
   scr01 build-thor   Build the Thor flasher from source (first-time setup)
 
 Typical flow after a reset:  scr01 reset  ->  (finish on-screen setup)  ->  scr01 setup
