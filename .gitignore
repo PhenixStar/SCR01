@@ -1,0 +1,3 @@
+# built flasher lives outside the repo (~/.local/share/scr01)
+*.log
+/thor/
