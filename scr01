@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# scr01 - friendly front door for the SCR01 toolkit.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cmd="${1:-menu}"
+case "$cmd" in
+  reset) shift; exec bash "$HERE/scripts/scr01-reset.sh" "$@";;
+  setup) shift; exec bash "$HERE/scripts/scr01-setup.sh" "$@";;
+  5g)    shift; exec bash "$HERE/scripts/scr01-5g.sh" "$@";;
+  build-thor) shift; exec bash "$HERE/tools/build-thor.sh" "$@";;
+  menu|*)
+    cat <<'TXT'
+SCR01 toolkit - Samsung Galaxy 5G Mobile Wi-Fi (SM-H412J)
+
+  scr01 reset        Factory reset (erase userdata) via Thor/Odin, no SamFW
+  scr01 setup        Start-as-new: English language + keyboard + 5G-preferred (adb)
+  scr01 5g           Report/attempt 5G-for-PH; prints on-device band steps
+  scr01 build-thor   Build the Thor flasher from source (first-time setup)
+
+Typical flow after a reset:  scr01 reset  ->  (finish on-screen setup)  ->  scr01 setup
+TXT
+    ;;
+esac
