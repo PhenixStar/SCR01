@@ -13,7 +13,7 @@ full SamFW package. Everything else runs over adb and needs **no root**.
 scr01 setup          # English language + keyboard + 5G-preferred (adb, no root)
 scr01 5g [--guide]   # report 5G state; --guide walks the on-device band lock
 scr01 apn <carrier>  # guided APN setup (smart|globe|dito): opens screen + values
-scr01 reset          # factory reset via Thor/Odin, no SamFW (destructive)
+scr01 reset [--yes]  # factory reset via Thor/Odin, no SamFW (--yes = non-interactive)
 scr01 log [N]        # show the last N run-log lines
 scr01 build-thor     # first-time: compile the Thor flasher for this CPU
 ```

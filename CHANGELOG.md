@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-10-31
+
+### Added
+- `scr01 reset --yes`: non-interactive mode that assumes yes to the build and
+  erase prompts, for repeat or scripted use. Interactive remains the default.
+
+### Changed
+- Corrected Philippine APN values and added primary/alternate per carrier with
+  sources: Smart dongle `internet` (phone `internet.smart.com.ph`), Globe
+  `internet.globe.com.ph` postpaid / `http.globe.com.ph` prepaid, DITO
+  `internet.dito.ph`. Username and password are blank for all.
+
 ## [0.2.0] - 2026-10-31
 
 ### Added
@@ -30,5 +42,6 @@ All notable changes to this project are documented here. The format follows
 - Shared helpers in `lib/common.sh` (adb discovery, prompts, device detection).
 - Documentation: README, ServiceMode band-lock guide, device reference.
 
+[0.3.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.3.0
 [0.2.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.2.0
 [0.1.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.1.0
