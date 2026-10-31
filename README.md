@@ -11,8 +11,10 @@ full SamFW package. Everything else runs over adb and needs **no root**.
 
 ```bash
 scr01 setup          # English language + keyboard + 5G-preferred (adb, no root)
-scr01 5g             # report 5G state; print on-device band-lock steps
+scr01 5g [--guide]   # report 5G state; --guide walks the on-device band lock
+scr01 apn <carrier>  # guided APN setup (smart|globe|dito): opens screen + values
 scr01 reset          # factory reset via Thor/Odin, no SamFW (destructive)
+scr01 log [N]        # show the last N run-log lines
 scr01 build-thor     # first-time: compile the Thor flasher for this CPU
 ```
 
@@ -32,12 +34,14 @@ Typical flow: `scr01 reset` → finish the on-screen first-boot wizard →
   and the constraints that shaped the toolkit.
 - [docs/servicemode-band-lock.md](docs/servicemode-band-lock.md) — the on-device
   steps for enabling 5G on a non-Japanese carrier and locking bands.
+- [docs/apn.md](docs/apn.md) — Philippine carrier APN values and why they must be
+  entered on-device.
 
 ## Layout
 
 ```
 scr01                 front-door dispatcher
-scripts/scr01-*.sh    setup / 5g / reset
+scripts/scr01-*.sh    setup / 5g / apn / reset
 tools/build-thor.sh   compile Thor from source for this CPU
 tools/thor-erase.py   drive Thor's shell to erase userdata (pexpect)
 lib/common.sh         shared helpers (adb resolve, prompts, detection)
