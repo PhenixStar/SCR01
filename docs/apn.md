@@ -19,6 +19,9 @@ official 2026 carrier page was found, so confirm with your carrier.
 APN type `default,supl` for all. After saving, select the new APN and toggle
 mobile data off and on. To confirm it worked, run `scr01 apn --verify`, which
 pings a public host over the device's radio and reports whether data is up.
+Shell-user `ping` is confirmed permitted on this device (verified on-device
+2026-11-03), so a `--verify` failure means the APN, SIM, or signal is the
+problem — not a sandbox restriction.
 
 ## Sources (community guides, undated/third-party)
 

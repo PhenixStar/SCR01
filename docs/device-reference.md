@@ -28,3 +28,17 @@ Verified over adb on a KDI/au unit.
   `android.provider.Telephony.SECRET_CODE` broadcast is denied to the shell.
   Band locking is therefore an on-device step; see
   [servicemode-band-lock.md](servicemode-band-lock.md).
+
+## Verified shell-user capabilities (on-device, 2026-11-03)
+
+Confirmed against a connected unit, settling the paths that shipped in v0.4.0
+without live hardware:
+
+- **`ping` is permitted** to the shell user. `ping -c 3 8.8.8.8` runs; with no
+  SIM it returns `connect: Network is unreachable` (rc 2) — a routing error, not
+  a SELinux `Permission denied`. So `scr01 apn --verify` can rely on ICMP as its
+  data-path check, and a failure there means no APN/SIM/signal, not a sandbox
+  block.
+- **`settings get` read-backs are accurate.** `scr01 setup --check` reported the
+  live `system_locales` (`en-US`), input method (HoneyBoard), and
+  `preferred_network_mode` (`24,26`) exactly, changed nothing, and exited 0.

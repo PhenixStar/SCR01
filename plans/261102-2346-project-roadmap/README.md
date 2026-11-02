@@ -38,10 +38,10 @@ See `docs/device-reference.md`, `docs/servicemode-band-lock.md`, `docs/apn.md`.
 | v0.3.0 | `reset --yes` non-interactive mode; corrected PH APN values with primary/alternate and sources. | `--yes` skips prompts; APN values match carrier guides. |
 | v0.4.0 | `doctor` readiness report; `apn --verify` connectivity check; `setup --check` dry-run; CI lint (shellcheck + syntax + py_compile). | ShellCheck `-S warning` clean; CI green on push; `doctor` is read-only. |
 
-## Proposed next phases (not started)
+## Proposed next phases
 
 Ordered by value-per-effort. None are blocking; the toolkit is complete without
-them.
+them. P6 is done (see below); P5 and P7 remain unstarted.
 
 ### P5 — `scr01 start`: guided "new phone" orchestrator
 Chain the full lifecycle: `reset` → wait for adb to return → `setup` → `5g`
@@ -53,12 +53,14 @@ report → `apn` → `apn --verify`, pausing at the on-screen first-boot wizard
 - **Risk:** the first-boot wizard is human-driven, so this is a guided state
   machine, not a hands-off script. Keep it honest about that.
 
-### P6 — On-device live validation
-The device-side paths added in v0.4.0 were verified off-device only.
-- **Dependencies:** a physical SCR01 connected over adb.
-- **Acceptance:** confirm whether shell-user `ping` is permitted on this SELinux
-  image (so `apn --verify` works as designed); confirm `setup --check`
-  read-backs; record results in `docs/apn.md` and the device reference.
+### P6 — On-device live validation ✅ done 2026-11-03
+The device-side paths added in v0.4.0 were verified off-device only; now
+confirmed on a connected unit.
+- **Result:** shell-user `ping` **is** permitted (SIM-absent gives
+  `Network is unreachable` / rc 2, a routing error, not a SELinux denial), so
+  `apn --verify` works as designed and did not trip `set -euo pipefail`.
+  `setup --check` read `en-US` / HoneyBoard / `24,26` back accurately and
+  changed nothing. Recorded in `docs/device-reference.md` and `docs/apn.md`.
 
 ### P7 — Install convenience
 An `install.sh` that symlinks `scr01` into `~/.local/bin`, plus optional
