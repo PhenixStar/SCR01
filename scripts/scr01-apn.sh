@@ -5,10 +5,33 @@
 # prints the values to enter. Values are community-documented defaults (no
 # official 2026 source found); confirm with your carrier. The SCR01 is a
 # hotspot/dongle, so the dongle-style APN is listed first where it differs.
-# Usage: scr01 apn [smart|globe|dito]
+#   scr01 apn [smart|globe|dito]   guided value entry (default)
+#   scr01 apn --verify             check mobile data works after you entered it
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source "$HERE/lib/common.sh"
 require_adb
+
+# --- connectivity verification ----------------------------------------------
+# After APNs are typed on-device, confirm data actually works. Shell-user ping
+# is normally permitted (unlike the APN provider write). Reports the real result.
+if [ "${1:-}" = "--verify" ] || [ "${1:-}" = "-v" ]; then
+  say "Verifying mobile data connectivity over the device's radio..."
+  radio="$("$ADB" shell getprop gsm.network.type 2>/dev/null | tr -d '\r')"
+  [ -n "$radio" ] && say "Radio reports network type: $radio"
+  # ping exits non-zero when unreachable (the case we are diagnosing); keep its
+  # output and swallow the status so set -e/pipefail do not abort before we warn.
+  out="$("$ADB" shell 'ping -c 3 -W 3 8.8.8.8' 2>&1 | tr -d '\r')" || true
+  echo "$out"
+  if printf '%s' "$out" | grep -qE '[1-3] (packets )?received|, 0% packet loss'; then
+    ok "Data path is up (ICMP reached 8.8.8.8). APN is working."
+    log_run apn verify-ok "type=${radio:-?}"
+  else
+    warn "No reply. Check: APN selected, mobile data toggled on, SIM has data, signal present."
+    warn "(If ping itself is blocked on this image, open a site in the device browser to confirm.)"
+    log_run apn verify-fail "type=${radio:-?}"
+  fi
+  exit 0
+fi
 
 print_smart() { cat <<'T'
   Carrier: Smart / TNT / Sun
@@ -54,5 +77,5 @@ case "${1:-}" in
 esac
 echo
 warn "These are community-documented values, not an official 2026 source. Confirm with your carrier."
-say "After saving, select the new APN and toggle mobile data off/on."
+say "After saving, select the new APN and toggle mobile data off/on, then: scr01 apn --verify"
 log_run apn guided "${1:-all}"
