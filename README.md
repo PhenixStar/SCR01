@@ -10,16 +10,18 @@ full SamFW package. Everything else runs over adb and needs **no root**.
 ## Quick start
 
 ```bash
-scr01 setup          # English language + keyboard + 5G-preferred (adb, no root)
+scr01 doctor         # read-only readiness report: what's ready to run, and why
+scr01 setup [--check] # English language + keyboard + 5G-preferred (--check = dry-run)
 scr01 5g [--guide]   # report 5G state; --guide walks the on-device band lock
 scr01 apn <carrier>  # guided APN setup (smart|globe|dito): opens screen + values
+scr01 apn --verify   # after entering an APN, confirm mobile data actually works
 scr01 reset [--yes]  # factory reset via Thor/Odin, no SamFW (--yes = non-interactive)
 scr01 log [N]        # show the last N run-log lines
 scr01 build-thor     # first-time: compile the Thor flasher for this CPU
 ```
 
 Typical flow: `scr01 reset` → finish the on-screen first-boot wizard →
-`scr01 setup`.
+`scr01 setup`. Unsure what's ready? Run `scr01 doctor` first.
 
 ## Requirements
 
@@ -41,11 +43,12 @@ Typical flow: `scr01 reset` → finish the on-screen first-boot wizard →
 
 ```
 scr01                 front-door dispatcher
-scripts/scr01-*.sh    setup / 5g / apn / reset
+scripts/scr01-*.sh    doctor / setup / 5g / apn / reset
 tools/build-thor.sh   compile Thor from source for this CPU
 tools/thor-erase.py   drive Thor's shell to erase userdata (pexpect)
 lib/common.sh         shared helpers (adb resolve, prompts, detection)
 docs/                 device reference and ServiceMode guide
+.github/workflows/    CI: shellcheck + bash/python syntax on push
 ```
 
 ## Credits

@@ -17,7 +17,8 @@ official 2026 carrier page was found, so confirm with your carrier.
 | DITO | DITO Internet | `internet.dito.ph` | `dito` | blank |
 
 APN type `default,supl` for all. After saving, select the new APN and toggle
-mobile data off and on.
+mobile data off and on. To confirm it worked, run `scr01 apn --verify`, which
+pings a public host over the device's radio and reports whether data is up.
 
 ## Sources (community guides, undated/third-party)
 

@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-11-02
+
+### Added
+- `scr01 doctor`: read-only readiness report. Checks adb/download state, the
+  Thor build, reset dependencies (python3/pexpect, dotnet), battery, and the
+  device's current locale/keyboard/network mode so you know which subcommands
+  are ready before running them.
+- `scr01 apn --verify`: after you enter an APN on-device, confirm mobile data
+  works by pinging a public host over the radio (shell ping, no root). Closes
+  the loop that guided APN entry previously left open.
+- `scr01 setup --check`: dry-run that reports current vs desired locale,
+  keyboard, and network mode without changing anything.
+- Continuous integration (`.github/workflows/lint.yml`): ShellCheck at warning
+  severity plus bash syntax on every shell file, and a py_compile check on the
+  Thor driver.
+
 ## [0.3.0] - 2026-10-31
 
 ### Added
@@ -42,6 +58,7 @@ All notable changes to this project are documented here. The format follows
 - Shared helpers in `lib/common.sh` (adb discovery, prompts, device detection).
 - Documentation: README, ServiceMode band-lock guide, device reference.
 
+[0.4.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.4.0
 [0.3.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.3.0
 [0.2.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.2.0
 [0.1.0]: https://github.com/PhenixStar/SCR01/releases/tag/v0.1.0
