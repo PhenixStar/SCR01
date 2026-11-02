@@ -1,3 +1,7 @@
 # built flasher lives outside the repo (~/.local/share/scr01)
 *.log
 /thor/
+
+# python bytecode cache (thor-erase.py)
+__pycache__/
+*.pyc
